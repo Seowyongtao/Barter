@@ -7,6 +7,7 @@ from models.user import User
 class Item(BaseModel):
     file_name = pw.CharField(null=True)
     tag = pw.CharField(null=True)
+    description = pw.CharField(null=True,max_length=255)
     user = pw.ForeignKeyField(User, backref="user")
 
 # we user to retrieve data from Amazon s3

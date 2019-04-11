@@ -10,6 +10,6 @@ app.register_blueprint(users_api_blueprint, url_prefix='/api/v1/users')
 from instagram_api.blueprints.login.views import login_api_blueprint
 app.register_blueprint(login_api_blueprint, url_prefix='/api/v1/auth')
 
-from instagram_api.blueprints.items.views import item_api_blueprint
+from instagram_api.blueprints.items.view import item_api_blueprint
 app.register_blueprint(item_api_blueprint, url_prefix='/api/v1/item')
 

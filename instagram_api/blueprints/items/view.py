@@ -18,12 +18,13 @@ item_api_blueprint = Blueprint('item_api',
 
 @item_api_blueprint.route('/new', methods=['POST'])
 @jwt_required
-def create():
+def new():
     if not request.is_json:
         return jsonify({"msg": "Missing JSON in request"}), 400
 
-    file_name= request.json.get('username', None)
-    tag = request.json.get('password', None)
+    file_name= request.json.get('file_name', None)
+    tag = request.json.get('tag', None)
+    description = request.json.get('description', None)
     username = get_jwt_identity()
     
 
@@ -31,23 +32,59 @@ def create():
         return jsonify({"msg": "Missing file_name parameter"}), 400
     if not tag:
         return jsonify({"msg": "Missing tag parameter"}), 400
+    if not description:
+        return jsonify({"msg": "Missing description parameter"}), 400
 
     username_check = User.get_or_none(User.username == username)
     
-    
-    if not username_check:
-        
-        item = Item(file_name=file_name,tag=tag,user_id=username_check.id)
-        item.save()
-        return jsonify({
-        "message": "Successfully make a new item.",
-        "status": "success",
-        "user": {
-            "id": username_check.id,
-            "tag": tag,
-            "file_name": file_name
-        }
+    item = Item(file_name=file_name,tag=tag,description=description, user_id=username_check.id)
+    item.save()
+    return jsonify({
+    "message": "Successfully make a new item.",
+    "status": "success",
+    "user": {
+        "id": username_check.id,
+        "tag": tag,
+        "description": description,
+        "file_name": file_name
+    }
     }), 200
-    # else:
-    #     return jsonify({"msg": "JWT is invalid"}), 400
+  
+
+
+# edit item information
+@item_api_blueprint.route('/edit', methods=['POST'])
+@jwt_required
+def edit():
+    if not request.is_json:
+        return jsonify({"msg": "Missing JSON in request"}), 400
+
+    file_name= request.json.get('file_name', None)
+    tag = request.json.get('tag', None)
+    description = request.json.get('description', None)
+    username = get_jwt_identity()
+    
+
+    if not file_name:
+        return jsonify({"msg": "Missing file_name parameter"}), 400
+    if not tag:
+        return jsonify({"msg": "Missing tag parameter"}), 400
+    if not description:
+        return jsonify({"msg": "Missing description parameter"}), 400
+
+    username_check = User.get_or_none(User.username == username)
+    
+    username_check.file_name = file_name
+    username_check.tag = tag
+    username_check.description = description
+    username_check.save()
+    return jsonify({
+    "message": "Successfully update a new item.",
+    "status": "success",
+    "user": {
+        "id": username_check.id,
+        "tag": tag,
+        "file_name": file_name
+    }
+    }), 200
   
