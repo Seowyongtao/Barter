@@ -6,7 +6,8 @@ from models.user import User
 
 class Item(BaseModel):
     file_name = pw.CharField(null=True)
-    tag = pw.CharField(null=True)
+    tag_parent = pw.CharField(null=True)
+    tag_children = pw.CharField(null=True)
     description = pw.CharField(null=True,max_length=255)
     user = pw.ForeignKeyField(User, backref="user")
 
