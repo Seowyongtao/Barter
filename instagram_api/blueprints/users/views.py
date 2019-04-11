@@ -63,7 +63,7 @@ def create():
         user = User.get(User.username == username)
         access_token = create_access_token(identity=username)
         return jsonify({
-        "access_tokhttp://localhost:5000/api/v1/auth/loginen": access_token,
+        "access_token": access_token,
         "message": "Successfully created a user and signed in.",
         "status": "success",
         "user": {
