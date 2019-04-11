@@ -13,8 +13,6 @@ from flask_jwt_extended import (
 )
 
 
-
-
 users_api_blueprint = Blueprint('users_api',
                              __name__,
                              template_folder='templates')
@@ -25,7 +23,6 @@ def index():
 
 
 @users_api_blueprint.route('/new', methods=['POST'])
-
 def create():
     if not request.is_json:
         return jsonify({"msg": "Missing JSON in request"}), 400
@@ -78,7 +75,7 @@ def create():
 
 
 
-@users_api_blueprint.route('/new/show_profilepag', methods=['POST'])
+@users_api_blueprint.route('/new/show_profilepag', methods=['GET'])
 @jwt_required
 def show_profilepag():
     username = get_jwt_identity()
@@ -94,7 +91,6 @@ def show_profilepag():
                 "occupation": user.occupation,
                 "location": user.location,
                 "sex": user.sex,
-                "phone":user.phone,
                 "going_to": user.going_to,
                 "date" : user.date,
                 "birthday": user.birthday,
