@@ -1,4 +1,3 @@
-from flask_wtf.csrf import CSRFProtect
 import os
 import config
 from flask import Flask
@@ -24,8 +23,11 @@ if os.getenv('FLASK_ENV') == 'production':
 else:
     app.config.from_object("config.DevelopmentConfig")
 
+<<<<<<< Updated upstream
 csrf = CSRFProtect(app)
 
+=======
+>>>>>>> Stashed changes
 @app.before_request
 def before_request():
     db.connect()
