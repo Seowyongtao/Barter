@@ -9,15 +9,6 @@ class User(BaseModel):
     password = pw.CharField(null=True)
     picture = pw.CharField(default='profile-placeholder.jpg')
 
-
-    @hybrid_property
-    def profile_image_url(self):
-        return 'https://s3-ap-southeast-1.amazonaws.com/next-clone-instagram-hiro/' + self.picture
-
-class User(BaseModel):
-    username= pw.CharField( null=True)
-    email =  pw.CharField( null=True)
-    password =  pw.CharField( null=True)
     firstname = pw.CharField( null=True)
     lastname = pw.CharField( null=True)   
     occupation = pw.CharField( null=True)      
@@ -26,5 +17,12 @@ class User(BaseModel):
     going_to = pw.CharField( null=True)
     date = pw.CharField( null=True)      
     birthday = pw.CharField( null=True)      
-    brif = pw.CharField( null=True)      
+    brif = pw.CharField( null=True)    
+
+
+    @hybrid_property
+    def profile_image_url(self):
+        return 'https://s3-ap-southeast-1.amazonaws.com/next-clone-instagram-hiro/' + self.picture
+
+     
 

@@ -1,63 +1,53 @@
 from flask import Blueprint
 from flask import Blueprint, request,jsonify
 import os
+from models.item import Item
 from models.user import User
+
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_jwt_extended import (
     create_access_token,
+    jwt_required,
+    get_jwt_identity
 )
 
-users_api_blueprint = Blueprint('users_api',
+item_api_blueprint = Blueprint('item_api',
                              __name__,
                              template_folder='templates')
 
-@users_api_blueprint.route('/', methods=['GET'])
-def index():
-    return "USERS API"
 
-
-@users_api_blueprint.route('/new', methods=['POST'])
-# @csrf.exempt
+@item_api_blueprint.route('/new', methods=['POST'])
+@jwt_required
 def create():
     if not request.is_json:
         return jsonify({"msg": "Missing JSON in request"}), 400
 
-    username = request.json.get('username', None)
-    password = request.json.get('password', None)
-    email = request.json.get('email',None)
+    file_name= request.json.get('username', None)
+    tag = request.json.get('password', None)
+    username = get_jwt_identity()
     
 
-    if not username:
-        return jsonify({"msg": "Missing username parameter"}), 400
-    if not password:
-        return jsonify({"msg": "Missing password parameter"}), 400
-    if not email:
-        return jsonify({"msg": "Missing email parameter"}), 400
-
-    # actual sign up users 
-    user_password = password
-    hashed_password = generate_password_hash(user_password)
+    if not file_name:
+        return jsonify({"msg": "Missing file_name parameter"}), 400
+    if not tag:
+        return jsonify({"msg": "Missing tag parameter"}), 400
 
     username_check = User.get_or_none(User.username == username)
-    email_check = User.get_or_none(User.email == email)
     
-    if (result and result_email):
-        u = User(username=username,email=email,password=hashed_password)
-
-    if not username_check and not email_check:
-        u.save()
-        user = User.get(User.username == username)
-        access_token = create_access_token(identity=username)
+    
+    if not username_check:
+        
+        item = Item(file_name=file_name,tag=tag,user_id=username_check.id)
+        item.save()
         return jsonify({
-        "access_token": access_token,
-        "message": "Successfully created a user and signed in.",
+        "message": "Successfully make a new item.",
         "status": "success",
         "user": {
-            "id": user.id,
-            "profile_picture": user.profile_image_url,
-            "username": user.username
+            "id": username_check.id,
+            "tag": tag,
+            "file_name": file_name
         }
     }), 200
-    else:
-        return jsonify({"msg": "username or email already used"}), 400
+    # else:
+    #     return jsonify({"msg": "JWT is invalid"}), 400
   
