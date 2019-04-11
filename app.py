@@ -11,23 +11,18 @@ from flask_jwt_extended import (
 web_dir = os.path.join(os.path.dirname(
     os.path.abspath(__file__)), 'instagram_web')
 
-app = Flask('Barter', root_path=web_dir)
+app = Flask('NEXTAGRAM', root_path=web_dir)
 
 app.config['JWT_SECRET_KEY'] = 'super-secret'  # Change this!
 jwt = JWTManager(app)
 
-
+# deleted app duplicate place here to fix bug
 
 if os.getenv('FLASK_ENV') == 'production':
     app.config.from_object("config.ProductionConfig")
 else:
     app.config.from_object("config.DevelopmentConfig")
 
-<<<<<<< Updated upstream
-csrf = CSRFProtect(app)
-
-=======
->>>>>>> Stashed changes
 @app.before_request
 def before_request():
     db.connect()
