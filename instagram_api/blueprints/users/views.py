@@ -12,7 +12,7 @@ from flask_jwt_extended import (
     jwt_required
 )
 
-from app import csrf
+
 
 
 users_api_blueprint = Blueprint('users_api',
@@ -25,7 +25,7 @@ def index():
 
 
 @users_api_blueprint.route('/new', methods=['POST'])
-@csrf.exempt
+
 def create():
     if not request.is_json:
         return jsonify({"msg": "Missing JSON in request"}), 400

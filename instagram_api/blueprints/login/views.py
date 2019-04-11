@@ -6,8 +6,6 @@ from flask_jwt_extended import (
     get_jwt_identity
 )
 from werkzeug.security import check_password_hash
-from app import csrf
-import datetime
 
 login_api_blueprint = Blueprint('login_api',
                              __name__,
@@ -15,7 +13,6 @@ login_api_blueprint = Blueprint('login_api',
 
     
 @login_api_blueprint.route('/login', methods=['POST'])
-@csrf.exempt
 def login():
     if not request.is_json:
         return jsonify({"msg": "Missing JSON in request"}), 400

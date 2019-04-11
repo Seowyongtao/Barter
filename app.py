@@ -1,4 +1,3 @@
-from flask_wtf.csrf import CSRFProtect
 import os
 import config
 from flask import Flask
@@ -23,9 +22,6 @@ if os.getenv('FLASK_ENV') == 'production':
     app.config.from_object("config.ProductionConfig")
 else:
     app.config.from_object("config.DevelopmentConfig")
-
-
-csrf = CSRFProtect(app)
 
 @app.before_request
 def before_request():
