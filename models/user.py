@@ -17,7 +17,14 @@ class User(BaseModel):
     going_to = pw.CharField( null=True)
     date = pw.CharField( null=True)      
     birthday = pw.CharField( null=True)      
-    brif = pw.CharField( null=True)      
+    brif = pw.CharField( null=True)    
+
+
+    @hybrid_property
+    def profile_image_url(self):
+        return 'https://s3-ap-southeast-1.amazonaws.com/next-clone-instagram-hiro/' + self.picture
+
+     
 
     @hybrid_property
     def profile_image_url(self):
