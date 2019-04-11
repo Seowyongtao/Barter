@@ -17,6 +17,8 @@ app = Flask('NEXTAGRAM', root_path=web_dir)
 app.config['JWT_SECRET_KEY'] = 'super-secret'  # Change this!
 jwt = JWTManager(app)
 
+# deleted app duplicate place here to fix bug
+
 if os.getenv('FLASK_ENV') == 'production':
     app.config.from_object("config.ProductionConfig")
 else:

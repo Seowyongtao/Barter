@@ -14,6 +14,17 @@ class User(BaseModel):
     def profile_image_url(self):
         return 'https://s3-ap-southeast-1.amazonaws.com/next-clone-instagram-hiro/' + self.picture
 
-# class Following(BaseModel):
-#     fan = pw.ForeignKeyField(User)
-#     idol = pw.ForeignKeyField(User)
+class User(BaseModel):
+    username= pw.CharField( null=True)
+    email =  pw.CharField( null=True)
+    password =  pw.CharField( null=True)
+    firstname = pw.CharField( null=True)
+    lastname = pw.CharField( null=True)   
+    occupation = pw.CharField( null=True)      
+    location = pw.CharField( null=True)      
+    sex = pw.CharField( null=True)              
+    going_to = pw.CharField( null=True)
+    date = pw.CharField( null=True)      
+    birthday = pw.CharField( null=True)      
+    brif = pw.CharField( null=True)      
+
