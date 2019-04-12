@@ -97,3 +97,30 @@ def show_profilepag():
                 "brif": user.brif
             }
         }), 200
+
+
+@users_api_blueprint.route('/new/edit_profilepag', methods=['GET'])
+@jwt_required
+def edit_profilepag():
+    username = get_jwt_identity()
+    user = User.get_or_none(User.username == username)
+
+    if user:
+        return jsonify({
+            "status":"success",
+            "user":{
+                "username": user.username,
+                "firstname":user.firstname,
+                "lastname": user.lastname,
+                "occupation": user.occupation,
+                "location": user.location,
+                "sex": user.sex,
+                "going_to": user.going_to,
+                "date" : user.date,
+                "birthday": user.birthday,
+                "brif": user.brif
+            }
+        }), 200
+
+
+        
