@@ -67,11 +67,7 @@ def edit(id):
     tag_parent = request.json.get('tag_parent', None)
     tag_children = request.json.get('tag_children', None)
     description = request.json.get('description', None)
-<<<<<<< HEAD
     id = get_jwt_identity()
-=======
-    # username = get_jwt_identity()
->>>>>>> f0610b73ef70f347ecda5b90535c03d7c28dc87e
     
 
     if not file_name:
@@ -83,11 +79,7 @@ def edit(id):
     if not description:
         return jsonify({"msg": "Missing description parameter"}), 400
 
-<<<<<<< HEAD
-    username_check = User.get_or_none(User.id == id)
-=======
     item = Item.get_or_none(Item.id == id)
->>>>>>> f0610b73ef70f347ecda5b90535c03d7c28dc87e
     
     item.file_name = file_name
     item.tag_parent = tag_parent
