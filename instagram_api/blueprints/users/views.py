@@ -58,7 +58,7 @@ def create():
     if not username_check and not email_check:
         u.save()
         user = User.get(User.username == username)
-        access_token = create_access_token(identity=username)
+        access_token = create_access_token(identity=user.id)
         return jsonify({
         "access_token": access_token,
         "message": "Successfully created a user and signed in.",
@@ -78,8 +78,8 @@ def create():
 @users_api_blueprint.route('/new/show_profilepag', methods=['GET'])
 @jwt_required
 def show_profilepag():
-    username = get_jwt_identity()
-    user = User.get_or_none(User.username == username)
+    id = get_jwt_identity()
+    user = User.get_or_none(User.id == id)
 
     if user:
         return jsonify({
@@ -99,13 +99,55 @@ def show_profilepag():
         }), 200
 
 
-@users_api_blueprint.route('/new/edit_profilepag', methods=['GET'])
+
+@users_api_blueprint.route('/new/edit_profilepag', methods=['POST'])
 @jwt_required
 def edit_profilepag():
-    username = get_jwt_identity()
-    user = User.get_or_none(User.username == username)
+    id = get_jwt_identity()
+    user = User.get(User.id == id)
 
-    if user:
+    if not request.is_json:
+        return jsonify({"msg": "Missing JSON in request"}), 400
+
+    username = request.json.get('username', None)
+    firstname = request.json.get('firstname', None)
+    lastname = request.json.get('lastname',None)
+    location = request.json.get('location',None)
+    going_to = request.json.get('going_to',None)
+    brif = request.json.get('brif',None)
+    sex = request.json.get('sex',None)
+    occupation = request.json.get('occupation',None)
+    date = request.json.get('date',None)
+    birthday = request.json.get('birthday',None)
+    
+
+    if not username:
+        return jsonify({"msg": "Missing username parameter"}), 400
+    if not firstname:
+        return jsonify({"msg": "Missing firstname parameter"}), 400
+    if not lastname:
+        return jsonify({"msg": "Missing lastname parameter"}), 400
+    if not location:
+        return jsonify({"msg": "Missing location parameter"}), 400
+    if not going_to:
+        return jsonify({"msg": "Missing going_to parameter"}), 400
+    if not brif:
+        return jsonify({"msg": "Missing brif parameter"}), 400
+    if not occupation:
+        return jsonify({"msg": "Missing occupation parameter"}), 400
+    if not date:
+        return jsonify({"msg": "Missing date parameter"}), 400
+    if not birthday:
+        return jsonify({"msg": "Missing birthday parameter"}), 400
+    if not sex:
+        return jsonify({"msg": "Missing sex parameter"}), 400    
+
+
+    username_check = User.get_or_none((User.username == username) )
+
+    if not username_check:
+        us= (User.update({User.username:username,  User.firstname:firstname,  User.lastname:lastname, User.location:location, User.going_to:going_to, User.brif:brif, User.occupation:occupation, User.date:date, User.birthday:birthday, User.sex:sex} ).where(User.id==id))
+        us.execute()
         return jsonify({
             "status":"success",
             "user":{
@@ -121,6 +163,44 @@ def edit_profilepag():
                 "brif": user.brif
             }
         }), 200
+   
+    elif user.username == username:
+        us= (User.update({User.firstname:firstname,  User.lastname:lastname, User.location:location, User.going_to:going_to, User.brif:brif, User.occupation:occupation, User.date:date, User.birthday:birthday, User.sex:sex} ).where(User.id==id))
+        us.execute()
+        return jsonify({
+            "status":"success",
+            "user":{
+                
+                "firstname":user.firstname,
+                "lastname": user.lastname,
+                "occupation": user.occupation,
+                "location": user.location,
+                "sex": user.sex,
+                "going_to": user.going_to,
+                "date" : user.date,
+                "birthday": user.birthday,
+                "brif": user.brif
+            }
+        }), 200
+   
+    else:
+        return jsonify({"msg":"same username already exist"})
+        
 
+    # if(not user.username == username) {
+    #     us= (User.update({User.username:username,  User.firstname:firstname,  User.lastname:lastname, User.location:location, User.going_to:going_to, User.brif:brif, User.occupation:occupation, User.date:date, User.birthday:birthday, User.sex:sex} ).where(User.id==id))
+    # } else {
+    #     us= (User.update({User.firstname:firstname,  User.lastname:lastname, User.location:location, User.going_to:going_to, User.brif:brif, User.occupation:occupation, User.date:date, User.birthday:birthday, User.sex:sex} ).where(User.id==id))
+    # }
+    
+
+    # username_same= User.get_or_none((username == user.username))
+    # firstname_check = User.get_or_none(User.firstname == firstname)
+    # lastname_check = User.get_or_none(User.lastname == lastname)
+    
+    # us= (User.update({User.username:username,  User.firstname:firstname,  User.lastname:lastname, User.location:location, User.going_to:going_to, User.brif:brif, User.occupation:occupation, User.date:date, User.birthday:birthday, User.sex:sex} ).where(User.id==id))
+
+    
+      
 
         
