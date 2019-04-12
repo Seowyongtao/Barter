@@ -31,7 +31,8 @@ def login():
         user.last_login = time
         user.save()
         # Identity can be any data that is json serializable
-        access_token = create_access_token(identity=username)
+        new_user_id = user.id
+        access_token = create_access_token(identity=new_user_id)
         return jsonify({
             "access_token": access_token,
             "message": "Successfully signed in.",
