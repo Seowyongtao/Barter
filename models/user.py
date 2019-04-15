@@ -26,9 +26,6 @@ class User(BaseModel):
 
      
 
-    @hybrid_property
-    def profile_image_url(self):
-        return 'https://s3-ap-southeast-1.amazonaws.com/next-clone-instagram-hiro/' + self.picture
 
     
 

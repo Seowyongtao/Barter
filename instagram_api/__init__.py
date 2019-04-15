@@ -13,3 +13,5 @@ app.register_blueprint(login_api_blueprint, url_prefix='/api/v1/auth')
 from instagram_api.blueprints.items.view import item_api_blueprint
 app.register_blueprint(item_api_blueprint, url_prefix='/api/v1/item')
 
+from instagram_api.blueprints.wishlist.views import wishlist_api_blueprint
+app.register_blueprint(wishlist_api_blueprint, url_prefix='/api/v1/wishlist')
